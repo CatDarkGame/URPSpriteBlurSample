@@ -50,7 +50,7 @@ public class GrabPass : ScriptableRenderPass
 
             // 임시 RT 생성
             // RendererData에서 Intermediate Texture옵션을 Always로 해야함.
-            cmd.GetTemporaryRT(_destination.id, descriptor, _downsamplingMethod == Downsampling.None ? FilterMode.Point : FilterMode.Bilinear);
+            cmd.GetTemporaryRT(_destination.id, descriptor, FilterMode.Bilinear);
             // Global Shader Propertie 등록
             cmd.SetGlobalTexture(_globalProperty, _destination.Identifier());
         }

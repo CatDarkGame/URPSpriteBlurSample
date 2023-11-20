@@ -67,8 +67,8 @@ Shader "CatDarkGame/Sprites/Sprite_TwoPassBlur"
         	};
         	for (int j = 0; j < 9; j++) {
         		float offset = offsets[j] * _BlurOffset * _MainTex_TexelSize.x;
-        		// col += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv + float2(offset, 0.0f)) * weights[j];
-                col += SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, uv + float2(offset, 0.0f), _MipLevel) * weights[j];  // mipmap을 활용해 부족한 블러 느낌 강화
+        		 col += SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv + float2(offset, 0.0f)) * weights[j];
+               // col += SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, uv + float2(offset, 0.0f), _MipLevel) * weights[j];  // mipmap을 활용해 부족한 블러 느낌 강화
         	}
         	half4 finalColor = lerp(baseMap, col, _BlendAmount);
 
@@ -88,12 +88,12 @@ Shader "CatDarkGame/Sprites/Sprite_TwoPassBlur"
         	};
         	for (int j = 0; j < 9; j++) 
         	{
-        		float offset = offsets[j] * _BlurOffset  * _CustomCameraTexture_TexelSize.y;
+        		float offset = offsets[j] * _BlurOffset  * _MainTex_TexelSize.y;
                 copyPassCol += SAMPLE_TEXTURE2D(_CustomCameraTexture, sampler_CustomCameraTexture, copyPassUV + float2(0.0, offset)) * weights[j];
         	}
 
             half4 finalColor = copyPassCol;
-            finalColor.a = _BlendAmount;
+            finalColor.a = 1;
         	return finalColor;
         }
     

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CatDarkGame_Sprites_Sprite_TwoPassBlur
+  m_Name: CatDarkGame_Sprites_AdvancedBlur 1
   m_Shader: {fileID: 4800000, guid: ab265d09c3d05f04eb56c12dcc45e339, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -21,13 +21,13 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 1e294a32ec34b3742b1de352c299dda0, type: 3}
+        m_Texture: {fileID: 2800000, guid: 259f29a105c8ec04ebbe17e2ade3030e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BlendAmount: 0.87
-    - _BlurOffset: 2.5
-    - _MipLevel: 2
+    - _BlendAmount: 1
+    - _BlurOffset: 4.77
+    - _MipLevel: 0
     m_Colors: []
   m_BuildTextureStacks: []

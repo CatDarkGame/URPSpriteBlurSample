@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4ea6901105b6804aaec579991e8e5f9, type: 3}
   m_Name: CopyTransparentRendererFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   _settings:
     Texture2DPropertyName: _CustomCameraTexture
     passEvent: 500
-    downsamplingMethod: 0
+    downsamplingMethod: 3
     layerMask:
       serializedVersion: 2
       m_Bits: 64
