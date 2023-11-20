@@ -38,6 +38,10 @@ namespace CatDarkGame
             if (!_spriteRenderer) _spriteRenderer = GetComponent<SpriteRenderer>();
             _spriteRenderer.material = _materialAsset;
 
+
+            // Sprite 에셋을 새로 생성하는 방식, (메모리 증가 위험)
+            // Unity Sprite 시스템은 Sprite 에셋 = Mesh 역할.
+            // 결론 : 이 방식도 올바른 솔루션이 아님
             if (_spriteRenderer && !_sprite)
             {
                 _sprite = Instantiate(_spriteRenderer.sprite);
