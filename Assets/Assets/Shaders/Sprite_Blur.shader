@@ -12,6 +12,8 @@ Shader "CatDarkGame/Sprites/Sprite_Blur"
         _BlurPower("Blur Power", Range(0.01, 16)) = 2
         _BlendAmount("Blend Amount", Range(0,1)) = 0.5
 
+         [Toggle(_CUSTOMVERTEXSTREAM)]_EnableCustomVertexStream("Enable CustomVertexStream", float) = 0
+
         // Legacy properties. They're here so that materials using this shader can gracefully fallback to the legacy sprite shader.
         [HideInInspector] _Color ("Tint", Color) = (1,1,1,1)
         [HideInInspector] PixelSnap ("Pixel snap", Float) = 0
@@ -40,6 +42,8 @@ Shader "CatDarkGame/Sprites/Sprite_Blur"
             #pragma multi_compile_instancing
             #pragma multi_compile_fragment _ DEBUG_DISPLAY
 
+            #pragma shader_feature _CUSTOMVERTEXSTREAM
+
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/UnityInstancing.hlsl"
             #include "HLSL/CommonUtil.hlsl"
@@ -57,6 +61,7 @@ Shader "CatDarkGame/Sprites/Sprite_Blur"
                 float3 positionOS   : POSITION;
                 float4 color        : COLOR;
                 float2 uv           : TEXCOORD0;
+                float2 custom           : TEXCOORD1;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -65,6 +70,7 @@ Shader "CatDarkGame/Sprites/Sprite_Blur"
                 float4  positionCS      : SV_POSITION;
                 float4  color           : COLOR;
                 float2  uv              : TEXCOORD0;
+                float2 custom           : TEXCOORD1;
                 #if defined(DEBUG_DISPLAY)
                     float3  positionWS      : TEXCOORD2;
                 #endif
@@ -110,6 +116,8 @@ Shader "CatDarkGame/Sprites/Sprite_Blur"
                 #endif
                 o.uv = TRANSFORM_TEX(attributes.uv, _MainTex);
                 o.color = attributes.color * _Color * _RendererColor;
+
+                o.custom = attributes.custom;
                 return o;
             }
 
@@ -117,17 +125,24 @@ Shader "CatDarkGame/Sprites/Sprite_Blur"
             float4 UnlitFragment(Varyings i) : SV_Target
             {
                 UNITY_SETUP_INSTANCE_ID(i);
-
+               
                 float2 uv = i.uv;
                 float4 mainTex = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
                 
                 float3 blurCol = 0;
                 float blurAlpha = 0;
                 half blurPower = _BlurPower;
+                #ifdef _CUSTOMVERTEXSTREAM
+                    blurPower = i.custom.x;
+                #endif
                 SumBlur_float(TEXTURE2D_ARGS(_MainTex, sampler_MainTex), uv, blurPower, blurCol, blurAlpha);
 
                 float4 result = 1;
-                half smoothAmount = smoothstep(0.0, 1, _BlendAmount); // _BlendAmount;
+                half blendAmount = _BlendAmount;
+                #ifdef _CUSTOMVERTEXSTREAM
+                    blendAmount = i.custom.y;
+                #endif
+                half smoothAmount = smoothstep(0.0, 1, blendAmount); // _BlendAmount;
                 result = lerp(mainTex, float4(blurCol, blurAlpha), smoothAmount) * i.color;
 
                 
