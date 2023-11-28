@@ -26,6 +26,29 @@ MonoBehaviour:
     - LightweightForward
     - UniversalForward
     - Forward_TwoPass
+--- !u!114 &-6930618782997066139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19be1852aadf19d46a7753427b758b65, type: 3}
+  m_Name: LayerFilterRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  _settings:
+    passEvent: 500
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 64
+    shaderTag_Prepass: SpriteRenderPrepass
+    shaderTag_Drawpass: SpriteRenderDrawpass
+  _shader: {fileID: 4800000, guid: b05f764706c8b7349bd69f8921889519, type: 3}
+  _blurIteration: 3
+  _blurOffset: 2
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43,7 +66,8 @@ MonoBehaviour:
       type: 3}
   m_RendererFeatures:
   - {fileID: -8076574974174154103}
-  m_RendererFeatureMap: 89328a3eda3dea8f
+  - {fileID: -6930618782997066139}
+  m_RendererFeatureMap: 89328a3eda3dea8f654ecfd5ef7ed19f
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -68,7 +92,7 @@ MonoBehaviour:
     m_Bits: 55
   m_TransparentLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
   m_DefaultStencilState:
     overrideStencilState: 0
     stencilReference: 0
@@ -84,3 +108,28 @@ MonoBehaviour:
   m_ClusteredRendering: 0
   m_TileSize: 32
   m_IntermediateTextureMode: 1
+--- !u!114 &6777794679488011186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65a65145e998faa44b2f6d2185cb1b16, type: 3}
+  m_Name: LayerFilterRenderFeature
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  _blurMat: {fileID: 2100000, guid: 4e13064906653884a9c7df3015658388, type: 2}
+  _renderTexture: {fileID: 8400000, guid: dd0ffe0c6506e39468f722f708ba9b79, type: 2}
+  passEvent: 500
+  layerMask:
+    m_Bits: 64
+  shaderTagStrings:
+  - UniversalForwardOnly
+  - SRPDefaultUnlit
+  - LightweightForward
+  - UniversalForward
+  shaderTagStrings_2:
+  - Forward_TwoPass

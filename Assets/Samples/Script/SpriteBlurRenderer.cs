@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 using UnityEngine.Rendering;
 using Unity.Collections;
-using UnityEngine.Purchasing;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

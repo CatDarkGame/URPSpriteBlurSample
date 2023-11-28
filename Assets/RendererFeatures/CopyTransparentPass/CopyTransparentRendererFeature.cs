@@ -45,7 +45,6 @@ public class CopyTransparentRendererFeature : ScriptableRendererFeature
         _renderPass = new FilteredRenderPass(_settings.passEvent + 1, shaderTagIds, _settings.layerMask);
     }
     
-  
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
