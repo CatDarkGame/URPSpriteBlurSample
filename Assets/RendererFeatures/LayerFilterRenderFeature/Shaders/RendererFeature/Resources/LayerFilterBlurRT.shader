@@ -58,13 +58,14 @@ Shader "Hidden/CatDarkGame/LayerFilterRendererFeature/LayerFilterBlurRT"
             float4 frag(Varyings input) : SV_Target
             {
                 float2 baseMapUV = input.uv.xy;
+
                 float offset = _blurOffset;
-                float4 tex_1 = SAMPLE_TEXTURE2D(_DownsampleTex, sampler_linear_clamp, baseMapUV + float2(_DownsampleTex_TexelSize.x * -offset, 0.0)) / 4.0;
-                float4 tex_2 = SAMPLE_TEXTURE2D(_DownsampleTex, sampler_linear_clamp, baseMapUV + float2(_DownsampleTex_TexelSize.x * offset, 0.0)) / 4.0;
-                float4 tex_3 = SAMPLE_TEXTURE2D(_DownsampleTex, sampler_linear_clamp, baseMapUV + float2(0.0, _DownsampleTex_TexelSize.y * -offset)) / 4.0;
-                float4 tex_4 = SAMPLE_TEXTURE2D(_DownsampleTex, sampler_linear_clamp, baseMapUV + float2(0.0, _DownsampleTex_TexelSize.y * offset)) / 4.0;
+                float4 tex_1 = SAMPLE_TEXTURE2D(_DownsampleTex, sampler_linear_clamp, baseMapUV + float2(_DownsampleTex_TexelSize.x * -offset, 0.0));
+                float4 tex_2 = SAMPLE_TEXTURE2D(_DownsampleTex, sampler_linear_clamp, baseMapUV + float2(_DownsampleTex_TexelSize.x * offset, 0.0));
+                float4 tex_3 = SAMPLE_TEXTURE2D(_DownsampleTex, sampler_linear_clamp, baseMapUV + float2(0.0, _DownsampleTex_TexelSize.y * -offset));
+                float4 tex_4 = SAMPLE_TEXTURE2D(_DownsampleTex, sampler_linear_clamp, baseMapUV + float2(0.0, _DownsampleTex_TexelSize.y * offset));
                 
-                float4 finalColor = tex_1 + tex_2 + tex_3 + tex_4;
+                float4 finalColor = (tex_1 + tex_2 + tex_3 + tex_4) * 0.25f;
                 return finalColor;
             }
             

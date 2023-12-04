@@ -53,16 +53,20 @@ Shader "CatDarkGame/Sprites/LayerFilterSpriteBlur"
         half4 DrawPassFragment (Varyings i) : SV_TARGET 
         {
             float2 uv = i.uv * _MainTex_ST.xy + _MainTex_ST.zw;
-            half4 baseMap = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv); 
+            half blendAmount = i.color.a; //_BlendAmount;
+            
+            //half4 baseMap = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv); 
+            half4 baseMap = SAMPLE_TEXTURE2D_LOD(_MainTex, sampler_MainTex, uv, pow(blendAmount, 0.12) * 3); // 자연스러운 블랜딩을 위해 mipmap 샘플링 이용
 
             float2 uv_prepass = i.screenPosition.xy / i.screenPosition.w;
             half4 prepassMap = SAMPLE_TEXTURE2D(_LayerFilterCopypassBufferTex, sampler_LayerFilterCopypassBufferTex, uv_prepass); 
             
-            half blendAmount = i.color.a; //_BlendAmount;
             half4 finalColor = lerp(baseMap, prepassMap, blendAmount);
             finalColor.a = baseMap.a;
             return finalColor;
         }
+
+
     
     ENDHLSL
         
@@ -90,9 +94,10 @@ Shader "CatDarkGame/Sprites/LayerFilterSpriteBlur"
         Pass
         {
             Tags { "LightMode" = "SpriteRenderDrawpass" }
-            Name "DrawPass"
+            Name "DrawPass" 
 
             Blend SrcAlpha OneMinusSrcAlpha	
+            
             HLSLPROGRAM
 
                 #pragma vertex vert

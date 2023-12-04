@@ -41,14 +41,15 @@ MonoBehaviour:
   m_Active: 1
   _settings:
     passEvent: 500
+    useCopyColorPass: 0
     layerMask:
       serializedVersion: 2
       m_Bits: 64
     shaderTag_Prepass: SpriteRenderPrepass
     shaderTag_Drawpass: SpriteRenderDrawpass
   _shader: {fileID: 4800000, guid: b05f764706c8b7349bd69f8921889519, type: 3}
-  _blurIteration: 3
-  _blurOffset: 2
+  _blurIteration: 4
+  _blurOffset: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -78,8 +78,8 @@ namespace CatDarkGame
         void ModifyVertexAttribute(SpriteRenderer spriteRenderer)
         {
             Sprite sprite = spriteRenderer.sprite;
-            if(sprite == null) return; 
-
+            if(sprite == null) return;
+            
             int vertexCount = sprite.GetVertexCount();
             NativeArray<Vector2> texcoords2 = new NativeArray<Vector2>(vertexCount, Allocator.Temp);
 

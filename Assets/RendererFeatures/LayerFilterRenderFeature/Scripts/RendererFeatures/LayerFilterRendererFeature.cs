@@ -19,6 +19,7 @@ namespace CatDarkGame.RendererFeature
         {
             [Header("Pass Settings")]
             public RenderPassEvent passEvent = RenderPassEvent.AfterRenderingTransparents;
+            public bool useCopyColorPass = false;
 
             [Header("Target Object Settings")]
             public LayerMask layerMask;
@@ -36,6 +37,7 @@ namespace CatDarkGame.RendererFeature
         [SerializeField][Range(1, 5)] private int _blurIteration = 3;
         [SerializeField][Range(0.1f, 3.0f)] private float _blurOffset = 1.0f;
 
+        private LayerFilterRendererPass_CopyColor _copycolorpass = null;
         private LayerFilterRendererPass_Prepass _prepass = null;
         private LayerFilterRendererPass_Copy _copypass = null;
         private LayerFilterRendererPass_Drawpass _drawpass = null;
@@ -45,14 +47,15 @@ namespace CatDarkGame.RendererFeature
          * - 렌더러 기능이 처음 로드될 때,
          * - 렌더러 기능을 활성화 또는 비활성화 할 때,
          * - 렌더러 기능의 인스펙터에서 프로퍼티를 변경한 경우
-         */
+         */ 
         public override void Create()
         {
             if (_settings == null) return;
 
             Init_Shader();
 
-            _prepass = new LayerFilterRendererPass_Prepass(_settings.passEvent + 0, _settings.layerMask, _settings.GetShaderTagID_Prepass);
+            if(_settings.useCopyColorPass) _copycolorpass = new LayerFilterRendererPass_CopyColor(_settings.passEvent + 0);
+            _prepass = new LayerFilterRendererPass_Prepass(_settings.passEvent + 0, _settings.layerMask, _settings.GetShaderTagID_Prepass, !_settings.useCopyColorPass);
             _copypass = new LayerFilterRendererPass_Copy(_settings.passEvent + 1, _shader);
             _drawpass = new LayerFilterRendererPass_Drawpass(_settings.passEvent + 2, _settings.layerMask, _settings.GetShaderTagID_Drawpass);
         }
@@ -65,17 +68,20 @@ namespace CatDarkGame.RendererFeature
             _copypass = null;
             _prepass = null;
             _drawpass = null;
+            _copycolorpass = null;
         }
 
         // 매 프레임 호출 (카메라)
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
             RenderTargetHandle prepassBufferRT = new RenderTargetHandle();      // PrepassBufferRT ID 생성
-         
+            
             _prepass.Setup(ref prepassBufferRT, renderer.cameraColorTarget);
             _copypass.Setup(ref prepassBufferRT, _blurIteration, _blurOffset);
+            if (_settings.useCopyColorPass) _copycolorpass.Setup(renderer.cameraColorTarget, prepassBufferRT);
 
             // Pass 호출 (passEvent 순서가 동일하면 호출 순으로 먼저 렌더링됨)
+            if (_settings.useCopyColorPass) renderer.EnqueuePass(_copycolorpass);
             renderer.EnqueuePass(_prepass);
             renderer.EnqueuePass(_copypass);
             renderer.EnqueuePass(_drawpass);
